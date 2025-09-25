@@ -1,0 +1,25 @@
+
+<div class="view text-center">
+  @if (isLoading()) {
+    <div class="flex flex-col items-center justify-center p-10 bg-white rounded-2xl shadow-lg">
+      <div class="loader"></div>
+      <p class="mt-4 text-lg font-semibold text-gray-700">AI is enhancing notes & generating PDF...</p>
+    </div>
+  } @else {
+    @if (pdfUrl(); as url) {
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">Generated PDF Preview</h2>
+        <button (click)="editInputs()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">&larr; Edit Inputs</button>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg space-y-6">
+        <iframe [src]="url" class="w-full h-[700px] border rounded-lg"></iframe>
+        <div class="mt-2 flex justify-end">
+          <button (click)="downloadPdf()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg">Download PDF</button>
+        </div>
+      </div>
+    } @else {
+      <p class="text-red-500">PDF Generation failed. Please go back and try again.</p>
+       <button (click)="editInputs()" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">&larr; Edit Inputs</button>
+    }
+  }
+</div>

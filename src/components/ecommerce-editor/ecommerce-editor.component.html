@@ -1,0 +1,48 @@
+
+<div class="view bg-white p-6 rounded-2xl shadow-lg">
+  <div class="flex justify-between items-start mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">Create E-Commerce Listing</h2>
+      <p class="text-gray-500">Fill in the details below. The AI will do the rest.</p>
+    </div>
+    <button (click)="backToHome()" class="text-gray-500 hover:text-gray-800">&larr; Back to Drafts</button>
+  </div>
+  <form #form="ngForm" (ngSubmit)="generateListing()" class="space-y-6">
+    <div class="p-4 border rounded-lg bg-gray-50 relative">
+      <h3 class="font-semibold text-lg">📸 Media</h3>
+      <p class="text-sm text-gray-500 mb-2">Media upload and AI extraction features are coming soon!</p>
+    </div>
+
+    <div class="p-4 border rounded-lg">
+      <h3 class="font-semibold text-lg mb-4">📝 Core Details</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" [ngModel]="listing().title" (ngModelChange)="updateField('title', $event)" name="title" placeholder="Product Title" class="p-2 border rounded w-full">
+        <input type="text" [ngModel]="listing().brand" (ngModelChange)="updateField('brand', $event)" name="brand" placeholder="Brand" class="p-2 border rounded w-full">
+        <input type="text" [ngModel]="listing().model" (ngModelChange)="updateField('model', $event)" name="model" placeholder="Model" class="p-2 border rounded w-full">
+        <select [ngModel]="listing().condition || '3000'" (ngModelChange)="updateField('condition', $event)" name="condition" class="p-2 border rounded w-full">
+          <option value="3000">Used</option>
+          <option value="1000">New</option>
+          <option value="7000">For parts or not working</option>
+        </select>
+        <input type="number" [ngModel]="listing().price" (ngModelChange)="updateField('price', $event)" name="price" placeholder="Price" class="p-2 border rounded w-full" step="0.01">
+        <input type="number" [ngModel]="listing().quantity" (ngModelChange)="updateField('quantity', $event)" name="quantity" placeholder="Quantity" class="p-2 border rounded w-full" step="1">
+        <input type="text" [ngModel]="listing().category" (ngModelChange)="updateField('category', $event)" name="category" placeholder="eBay Category ID (optional)" class="p-2 border rounded w-full md:col-span-2">
+      </div>
+    </div>
+
+    <div class="p-4 border rounded-lg">
+      <h3 class="font-semibold text-lg mb-2">🗒️ AI Notes & Specifications</h3>
+      <p class="text-sm text-gray-500 mb-2">Add raw notes, condition details, or specs. The AI will use this to write a great description.</p>
+      <textarea [ngModel]="listing().notes" (ngModelChange)="updateField('notes', $event)" name="notes" placeholder="e.g., 14 inch screen, Intel Core i5 10th Gen, 8GB RAM, 256GB SSD. Minor scratch on top case. Fully functional." class="w-full p-2 border rounded h-32"></textarea>
+    </div>
+
+    <div class="flex justify-end gap-4 pt-4">
+      <button type="button" (click)="saveDraft()" [disabled]="isLoading()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition disabled:opacity-50">
+        @if(isLoading()){ <span class="loader-small"></span> Saving... } @else { Save Draft }
+      </button>
+      <button type="submit" [disabled]="isLoading()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50">
+        ✨ Generate Listing
+      </button>
+    </div>
+  </form>
+</div>

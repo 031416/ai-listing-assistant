@@ -1,0 +1,5 @@
+{
+  "name": "AI Listing Assistant",
+  "description": "An intelligent PWA to help create and manage multi-platform e-commerce and automotive listings. It uses AI to analyze images, generate descriptions, suggest prices, and export data in various formats.",
+  "requestFramePermissions": []
+}

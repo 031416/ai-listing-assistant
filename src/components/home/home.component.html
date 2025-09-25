@@ -1,0 +1,27 @@
+
+<div class="view">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Your Draft Listings</h2>
+    <button (click)="createNewListing()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg shadow-md transition-transform transform hover:scale-105">+ New Listing</button>
+  </div>
+  <div class="space-y-3">
+    @if (listings().length > 0) {
+      @for (listing of listings(); track listing.id) {
+        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition">
+          <div>
+            <p class="font-semibold">{{ listing.title || listing.Make || 'Untitled Listing' }}</p>
+            <p [class]="'text-sm ' + (listing.listingType === 'automotive' ? 'text-green-600' : 'text-blue-600')">
+              {{ listing.listingType === 'automotive' ? 'Automotive' : 'E-commerce' }}
+            </p>
+          </div>
+          <div>
+            <button (click)="editListing(listing.id)" class="bg-gray-200 text-sm hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 rounded">Edit</button>
+            <button (click)="deleteListing(listing.id)" class="ml-2 bg-red-100 text-sm hover:bg-red-200 text-red-700 font-bold py-1 px-3 rounded">Delete</button>
+          </div>
+        </div>
+      }
+    } @else {
+      <p class="text-gray-500">No drafts yet. Create one to get started!</p>
+    }
+  </div>
+</div>
