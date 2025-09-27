@@ -1,37 +1,38 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { View, Listing, ListingType, GeneratedData } from '../models';
+import { Listing, ListingType, View, VehiclePhotoAnalysis } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AppState {
-  view: WritableSignal<View> = signal('home');
+  currentView: WritableSignal<View> = signal('home');
   currentListing: WritableSignal<Listing | null> = signal(null);
-  currentListingType: WritableSignal<ListingType> = signal('ecommerce');
-  generatedData: WritableSignal<GeneratedData | null> = signal(null);
-  automotivePhotoData: WritableSignal<{ [key: string]: string }> = signal({});
+  automotivePhotoData: WritableSignal<VehiclePhotoAnalysis | null> = signal(null);
 
   navigateTo(view: View) {
-    this.view.set(view);
+    this.currentView.set(view);
   }
 
   startNewListing(type: ListingType) {
-    this.currentListingType.set(type);
     const newListing: Listing = {
-      id: `listing-${Date.now()}`,
+      id: crypto.randomUUID(),
       listingType: type,
+      title: 'New Draft'
     };
     this.currentListing.set(newListing);
-    // Reset data for the new listing
-    this.automotivePhotoData.set({}); 
-    this.generatedData.set(null);
-    this.navigateTo(type === 'ecommerce' ? 'ecommerce-editor' : 'automotive-editor');
+    this.automotivePhotoData.set(null); // Reset photo data
+    if (type === 'ecommerce') {
+      this.navigateTo('ecommerce-editor');
+    } else {
+      this.navigateTo('automotive-editor');
+    }
   }
 
   editListing(listing: Listing) {
     this.currentListing.set(listing);
-    this.currentListingType.set(listing.listingType);
-    // Reset photo data before loading a draft, as they are not persisted.
-    this.automotivePhotoData.set({});
-    this.generatedData.set(null);
-    this.navigateTo(listing.listingType === 'ecommerce' ? 'ecommerce-editor' : 'automotive-editor');
+    this.automotivePhotoData.set(null); // Reset photo data for now, might need better logic
+    if (listing.listingType === 'ecommerce') {
+      this.navigateTo('ecommerce-editor');
+    } else {
+      this.navigateTo('automotive-editor');
+    }
   }
 }
